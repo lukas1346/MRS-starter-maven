@@ -1,15 +1,19 @@
 package dk.easv.mrs.DAL;
 import dk.easv.mrs.BE.Movie;
+
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IMovieDataAccess {
 
     public List<Movie> getAllMovies() throws Exception;
 
-    public Movie createMovie(String title, int year) throws Exception;
+    public Movie createMovie(Movie movie) throws Exception;
+
+    List<Movie> searchMovies(String query) throws Exception;
 
     public void updateMovie(Movie movie) throws Exception;
 
     public void deleteMovie(Movie movie) throws Exception;
-
 }

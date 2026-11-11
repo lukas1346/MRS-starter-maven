@@ -4,12 +4,19 @@ import dk.easv.mrs.BLL.MovieManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class MovieModel {
 
-    private ObservableList<Movie> moviesToBeViewed;
-
-    private MovieManager movieManager;
+    private final ObservableList<Movie> moviesToBeViewed;
+    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledFuture<?> scheduledTask;
+    private final MovieManager movieManager;
 
     public MovieModel() throws Exception {
         movieManager = new MovieManager();
@@ -17,15 +24,46 @@ public class MovieModel {
         moviesToBeViewed.addAll(movieManager.getAllMovies());
     }
 
-
-
     public ObservableList<Movie> getObservableMovies() {
         return moviesToBeViewed;
     }
 
-    public void searchMovie(String query) throws Exception {
+    private void searchMovie(String query) throws Exception {
         List<Movie> searchResults = movieManager.searchMovies(query);
         moviesToBeViewed.clear();
         moviesToBeViewed.addAll(searchResults);
+    }
+
+    public void scheduleMovieSearch(String query) throws Exception {
+        if (scheduledTask != null) {
+            scheduledTask.cancel(false);
+            System.out.println("Search interrupted");
+        }
+
+        scheduledTask = executor.schedule(() -> {
+            try {
+                searchMovie(query);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }, 300, TimeUnit.MILLISECONDS);
+    }
+
+    public void createMovie(Movie movie) throws Exception {
+        movieManager.createMovie(movie);
+    }
+
+    public void deleteMovie(String title, int year) throws Exception {
+        List<Movie> movies = movieManager.searchMovies(title);
+        for(Movie movie : movies) {
+            if (movie.getYear() == year && movie.getTitle().equals(title)) {
+                movieManager.deleteMovie(movie);
+                break;
+            }
+        }
+    }
+
+    public void updateMovie(Movie movie) throws Exception {
+        movieManager.updateMovie(movie);
     }
 }
