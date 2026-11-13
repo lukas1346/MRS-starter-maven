@@ -53,14 +53,8 @@ public class MovieModel {
         movieManager.createMovie(movie);
     }
 
-    public void deleteMovie(String title, int year) throws Exception {
-        List<Movie> movies = movieManager.searchMovies(title);
-        for(Movie movie : movies) {
-            if (movie.getYear() == year && movie.getTitle().equals(title)) {
-                movieManager.deleteMovie(movie);
-                break;
-            }
-        }
+    public void deleteMovie(Movie selectedMovie) throws Exception {
+        movieManager.deleteMovie(selectedMovie);
     }
 
     public void updateMovie(Movie movie) throws Exception {

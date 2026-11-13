@@ -10,7 +10,7 @@ public class MovieDAO_File implements IMovieDataAccess {
     //@Override
 
     public List<Movie> getAllMovies() throws SQLException, IOException {
-        String sql = "SELECT movieId, yearReleased, movieTitle FROM Movies";
+        String sql = "SELECT id, yearReleased, movieTitle FROM Movies";
         List<Movie> movies = new ArrayList<>();
         try (Connection connection = new DBConnector().getConnection()) {
             Statement statement = connection.createStatement();
@@ -36,7 +36,7 @@ public class MovieDAO_File implements IMovieDataAccess {
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
             if(resultSet.next()) {
-                movie.setId(resultSet.getInt("movieId"));
+                movie.setId(resultSet.getInt("id"));
             }
         }
         return movie;
@@ -45,7 +45,7 @@ public class MovieDAO_File implements IMovieDataAccess {
 
     @Override
     public void deleteMovie(Movie movie) throws SQLException, IOException {
-        String sql = "DELETE FROM Movies WHERE movieId = ?";
+        String sql = "DELETE FROM Movies WHERE id = ?";
         try (Connection connection = new DBConnector().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, movie.getId());
@@ -79,7 +79,7 @@ public class MovieDAO_File implements IMovieDataAccess {
 
     @Override
     public void updateMovie(Movie movie) throws Exception {
-        String sql = "UPDATE Movies SET yearReleased = ?, movieTitle = ? WHERE movieId = ?";
+        String sql = "UPDATE Movies SET yearReleased = ?, movieTitle = ? WHERE id = ?";
         try(Connection connection = new DBConnector().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -93,7 +93,7 @@ public class MovieDAO_File implements IMovieDataAccess {
 
     private Movie createMovieFromResult (ResultSet resultSet) throws SQLException {
         return new Movie (
-                resultSet.getInt("movieId"),
+                resultSet.getInt("id"),
                 resultSet.getInt("yearReleased"),
                 resultSet.getString("movieTitle")
         );

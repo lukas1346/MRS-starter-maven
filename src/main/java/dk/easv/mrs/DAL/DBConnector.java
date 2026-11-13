@@ -4,19 +4,19 @@ package dk.easv.mrs.DAL;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.util.Properties;
 
 public class DBConnector {
     private static final String PROP_FILE = "config/config.settings";
-    private SQLServerDataSource dataSource;
+    private final SQLServerDataSource dataSource;
 
     public DBConnector() throws IOException {
         Properties databaseProperties = new Properties();
-        databaseProperties.load(Files.newInputStream(new File(PROP_FILE).toPath()));
+        databaseProperties.load(Files.newInputStream(Path.of(PROP_FILE)));
 
         dataSource = new SQLServerDataSource();
         dataSource.setServerName(databaseProperties.getProperty("Server"));

@@ -5,7 +5,7 @@ import dk.easv.mrs.DAL.MovieDAO_File;
 import java.util.List;
 
 public class MovieManager {
-    private IMovieDataAccess movieDAO;
+    private final IMovieDataAccess movieDAO;
 
     public MovieManager() {
         movieDAO = new MovieDAO_File();

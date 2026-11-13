@@ -69,6 +69,8 @@ public class MovieViewController implements Initializable {
         tblMovies.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue != null) {
                 selectedMovie = newValue; // Set the selected song
+                txtTitle.setText(selectedMovie.getTitle());
+                txtYear.setText(String.valueOf(selectedMovie.getYear()));
                 System.out.println("Selected Movie: " + selectedMovie);
             }
         });
@@ -92,7 +94,9 @@ public class MovieViewController implements Initializable {
     }
 
     public void deleteMovie(ActionEvent actionEvent) throws Exception {
-        movieModel.deleteMovie(txtTitle.getText(), parseInt(txtYear.getText()));
+        if(selectedMovie != null) {
+            movieModel.deleteMovie(selectedMovie);
+        }
     }
 
     public void updateMovie(ActionEvent actionEvent) throws Exception {
