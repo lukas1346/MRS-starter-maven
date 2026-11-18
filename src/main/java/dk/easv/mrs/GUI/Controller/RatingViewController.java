@@ -136,13 +136,13 @@ public class RatingViewController implements Initializable {
             }
         }
         else {
-            displayError(new IllegalArgumentException("Please enter a valid review and or username."));
+            displayError(new IllegalArgumentException("Please enter a valid review."));
         }
     }
 
     @FXML
     private void deleteRating(ActionEvent actionEvent) {
-        if(selectedRating != null) {
+        if(selectedRating != null  && Objects.equals(selectedRating.name(), user.name())) {
             try {
                 ratingModel.deleteRating(selectedRating);
             } catch (Exception e) {
