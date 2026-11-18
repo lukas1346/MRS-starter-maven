@@ -47,9 +47,9 @@ public class RatingDAO_DB implements IRatingDataAccess {
         try(Connection connection = new DBConnector().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, rating.movieId());
-            preparedStatement.setString(2, rating.name());
-            preparedStatement.setInt(3, rating.score());
-            preparedStatement.setString(4, rating.review());
+            preparedStatement.setInt(2, rating.score());
+            preparedStatement.setString(3, rating.review());
+            preparedStatement.setString(4, rating.name());
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
@@ -89,7 +89,7 @@ public class RatingDAO_DB implements IRatingDataAccess {
 
     private Rating createRatingFromResult (ResultSet resultSet) throws SQLException {
         return new Rating (
-                resultSet.getInt("Id"),
+                resultSet.getInt("RatingId"),
                 resultSet.getInt("MovieId"),
                 resultSet.getInt("UserId"),
                 resultSet.getString("Name"),

@@ -27,6 +27,12 @@
         </dependency>
 
         <dependency>
+            <groupId>de.mkammerer</groupId>
+            <artifactId>argon2-jvm</artifactId>
+            <version>2.12</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>13.6.0.jre11</version>

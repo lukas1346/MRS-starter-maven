@@ -3,5 +3,6 @@
   <component name="DataSourcePerFileMappings">
     <file url="file://$PROJECT_DIR$/src/main/java/dk/easv/mrs/DAL/MovieDAO_DB.java" value="40cc7cee-8cbe-46bc-b34b-7e3376c12117" />
     <file url="file://$PROJECT_DIR$/src/main/java/dk/easv/mrs/DAL/RatingDAO_DB.java" value="40cc7cee-8cbe-46bc-b34b-7e3376c12117" />
+    <file url="file://$PROJECT_DIR$/src/main/java/dk/easv/mrs/DAL/UserDAO_DB.java" value="40cc7cee-8cbe-46bc-b34b-7e3376c12117" />
   </component>
 </project>

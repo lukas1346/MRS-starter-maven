@@ -3,6 +3,7 @@ package dk.easv.mrs.GUI.Controller;
 import dk.easv.mrs.BE.Movie;
 import dk.easv.mrs.GUI.Main;
 import dk.easv.mrs.GUI.Model.MovieModel;
+import dk.easv.mrs.UserSession;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -140,5 +141,11 @@ public class MovieViewController implements Initializable {
     @FXML
     private void openRating(ActionEvent actionEvent) throws Exception {
         Main.loadRating(selectedMovie);
+    }
+
+    @FXML
+    private void loadMenu(ActionEvent actionEvent) throws Exception {
+        UserSession.getInstance().clearSession();
+        Main.loadMenu();
     }
 }

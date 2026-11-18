@@ -21,7 +21,7 @@
                         <VBox prefHeight="92.0" prefWidth="400.0">
                            <children>
                               <Label text="Username" />
-                              <TextField fx:id="txtUser" maxWidth="300.0" prefHeight="25.0" prefWidth="300.0" />
+                              <Label fx:id="lblUsername" text="Label" />
                               <Label fx:id="lblRating" text="Rating: " />
                               <Slider fx:id="sliderRating" maxWidth="300.0" prefWidth="300.0" />
                               <Label text="Review" />

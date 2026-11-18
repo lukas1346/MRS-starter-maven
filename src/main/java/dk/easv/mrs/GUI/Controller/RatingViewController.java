@@ -2,7 +2,9 @@ package dk.easv.mrs.GUI.Controller;
 
 import dk.easv.mrs.BE.Movie;
 import dk.easv.mrs.BE.Rating;
+import dk.easv.mrs.BE.User;
 import dk.easv.mrs.GUI.Model.RatingModel;
+import dk.easv.mrs.UserSession;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,13 +15,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static java.lang.Integer.parseInt;
 
 public class RatingViewController implements Initializable {
     @FXML
-    private TextField txtUser;
+    private Label lblUsername;
     @FXML
     private TextField txtReview;
     @FXML
@@ -41,12 +44,16 @@ public class RatingViewController implements Initializable {
     private Rating selectedRating;
     private Movie selectedMovie;
 
+    private User user;
+
     public void initializeModel(Movie movie)  {
         this.selectedMovie = movie;
+        lblSelectedMovie.setText("Selected Movie: " + selectedMovie);
+        user = UserSession.getInstance().getCurrentUser();
+        lblUsername.setText(user.name());
         try {
             ratingModel = new RatingModel(selectedMovie);
             tblRatings.setItems(ratingModel.getObservableMovies());
-            lblSelectedMovie.setText("Selected Movie: " + selectedMovie);
         } catch (Exception e) {
             e.printStackTrace();
             displayError(e);
@@ -62,6 +69,7 @@ public class RatingViewController implements Initializable {
         sliderRating.setMinorTickCount(0);
         sliderRating.setSnapToTicks(true);
         sliderRating.setBlockIncrement(1);
+        lblRating.setText("Rating: " + String.valueOf((int) sliderRating.getValue()));
 
 
         colUser.setCellValueFactory(
@@ -83,8 +91,10 @@ public class RatingViewController implements Initializable {
             if (newValue != null) {
                 try {
                     selectedRating = newValue;
-                    txtUser.setText(selectedRating.name());
-                    txtReview.setText(selectedRating.review());
+                    if(Objects.equals(selectedRating.name(), user.name())) {
+                        sliderRating.setValue(selectedRating.score());
+                        txtReview.setText(selectedRating.review());
+                    }
                 } catch (Exception e) {
                     displayError(e);
                 }
@@ -112,13 +122,13 @@ public class RatingViewController implements Initializable {
 
     @FXML
     private void createRating(ActionEvent actionEvent) {
-        if(!txtUser.getText().isEmpty() && !(txtReview.getText()).isEmpty()) {
+        if(!(txtReview.getText()).isEmpty()) {
             try {
                 ratingModel.createRating(new Rating(
                         -1,
                         selectedMovie.id(),
                         -1,
-                        txtUser.getText(),
+                        user.name(),
                         (int) sliderRating.getValue(),
                         txtReview.getText()));
             } catch (Exception e) {
@@ -143,7 +153,7 @@ public class RatingViewController implements Initializable {
 
     @FXML
     private void updateRating(ActionEvent actionEvent) {
-        if(selectedRating != null) {
+        if(selectedRating != null && Objects.equals(selectedRating.name(), user.name())) {
             try {
                 Rating updatedRating = new Rating(selectedRating.id(), selectedMovie.id(), selectedRating.userId(), selectedRating.name(), (int) sliderRating.getValue(), txtReview.getText());
                 ratingModel.updateRating(updatedRating);
