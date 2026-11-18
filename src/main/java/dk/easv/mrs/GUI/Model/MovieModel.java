@@ -3,6 +3,9 @@ import dk.easv.mrs.BE.Movie;
 import dk.easv.mrs.BLL.MovieManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,7 +21,7 @@ public class MovieModel {
     private ScheduledFuture<?> scheduledTask;
     private final MovieManager movieManager;
 
-    public MovieModel() throws Exception {
+    public MovieModel() throws SQLException, IOException {
         movieManager = new MovieManager();
         moviesToBeViewed = FXCollections.observableArrayList();
         moviesToBeViewed.addAll(movieManager.getAllMovies());
@@ -28,13 +31,13 @@ public class MovieModel {
         return moviesToBeViewed;
     }
 
-    private void searchMovie(String query) throws Exception {
+    private void searchMovie(String query) throws SQLException, IOException {
         List<Movie> searchResults = movieManager.searchMovies(query);
         moviesToBeViewed.clear();
         moviesToBeViewed.addAll(searchResults);
     }
 
-    public void scheduleMovieSearch(String query) throws Exception {
+    public void scheduleMovieSearch(String query) {
         if (scheduledTask != null) {
             scheduledTask.cancel(false);
             System.out.println("Search interrupted");
@@ -49,15 +52,15 @@ public class MovieModel {
         }, 300, TimeUnit.MILLISECONDS);
     }
 
-    public void createMovie(Movie movie) throws Exception {
+    public void createMovie(Movie movie) throws SQLException, IOException {
         movieManager.createMovie(movie);
     }
 
-    public void deleteMovie(Movie selectedMovie) throws Exception {
+    public void deleteMovie(Movie selectedMovie) throws SQLException, IOException {
         movieManager.deleteMovie(selectedMovie);
     }
 
-    public void updateMovie(Movie movie) throws Exception {
+    public void updateMovie(Movie movie) throws SQLException, IOException {
         movieManager.updateMovie(movie);
     }
 }

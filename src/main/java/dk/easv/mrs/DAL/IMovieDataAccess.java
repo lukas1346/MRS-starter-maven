@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface IMovieDataAccess {
 
-    public List<Movie> getAllMovies() throws Exception;
+    List<Movie> getAllMovies() throws SQLException, IOException;
 
-    public Movie createMovie(Movie movie) throws Exception;
+    Movie createMovie(Movie movie) throws SQLException, IOException;
 
-    List<Movie> searchMovies(String query) throws Exception;
+    List<Movie> searchMovies(String query) throws SQLException, IOException;
 
-    public void updateMovie(Movie movie) throws Exception;
+    void updateMovie(Movie movie) throws SQLException, IOException;
 
-    public void deleteMovie(Movie movie) throws Exception;
+    void deleteMovie(Movie movie) throws SQLException, IOException;
 }

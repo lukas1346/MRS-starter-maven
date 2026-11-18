@@ -31,13 +31,13 @@
             </VBox>
             <Button mnemonicParsing="false" onAction="#updateMovie" text="Update" />
             <Button mnemonicParsing="false" onAction="#deleteMovie" text="Delete" />
+            <Button mnemonicParsing="false" onAction="#openRating" text="Rating" />
          </children>
       </HBox>
       <TextField fx:id="txtMovieSearch" promptText="Search" />
       <TableView fx:id="tblMovies" prefHeight="1000.0" prefWidth="200.0">
         <columns>
-          <TableColumn fx:id="colId" prefWidth="50.0" text="Id" />
-          <TableColumn fx:id="colTitle" prefWidth="500.0" text="Title" />
+          <TableColumn fx:id="colTitle" prefWidth="550.0" text="Title" />
             <TableColumn fx:id="colYear" prefWidth="50.0" text="Year" />
         </columns>
       </TableView>
