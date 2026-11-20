@@ -2,7 +2,6 @@ package dk.easv.mrs.GUI.Model;
 
 import dk.easv.mrs.BE.Movie;
 import dk.easv.mrs.BE.Rating;
-import dk.easv.mrs.BLL.MovieManager;
 import dk.easv.mrs.BLL.RatingManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

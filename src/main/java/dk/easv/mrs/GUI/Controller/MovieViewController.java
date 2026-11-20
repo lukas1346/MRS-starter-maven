@@ -1,29 +1,29 @@
 package dk.easv.mrs.GUI.Controller;
 
 import dk.easv.mrs.BE.Movie;
+import dk.easv.mrs.GUI.ErrorDisplay;
 import dk.easv.mrs.GUI.Main;
 import dk.easv.mrs.GUI.Model.MovieModel;
 import dk.easv.mrs.UserSession;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static java.lang.Integer.parseInt;
 
 public class MovieViewController implements Initializable {
 
+    @FXML
+    private Button btnCreate;
+    @FXML
+    private Button btnUpdate;
+    @FXML
+    private Button btnDelete;
     @FXML
     private TextField txtMovieSearch;
     @FXML
@@ -44,7 +44,7 @@ public class MovieViewController implements Initializable {
         try {
             movieModel = new MovieModel();
         } catch (Exception e) {
-            displayError(e);
+            ErrorDisplay.displayError(e);
         }
     }
 
@@ -52,6 +52,13 @@ public class MovieViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        boolean admin = UserSession.getInstance().isAdmin();
+
+        btnCreate.setDisable(!admin);
+        btnUpdate.setDisable(!admin);
+        btnDelete.setDisable(!admin);
+
+
         colTitle.setCellValueFactory(
                 cellData -> new SimpleStringProperty(cellData.getValue().title())
         );
@@ -68,7 +75,7 @@ public class MovieViewController implements Initializable {
             try {
                 movieModel.scheduleMovieSearch(newValue);
             } catch (Exception e) {
-                displayError(e);
+                ErrorDisplay.displayError(e);
             }
         });
 
@@ -79,61 +86,60 @@ public class MovieViewController implements Initializable {
                     txtTitle.setText(selectedMovie.title());
                     txtYear.setText(String.valueOf(selectedMovie.year()));
                 } catch (Exception e) {
-                    displayError(e);
+                    ErrorDisplay.displayError(e);
                 }
             }
         });
     }
 
-    private void displayError(Throwable t)
-    {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Something went wrong");
-        if (t instanceof SQLException) {
-            alert.setHeaderText("Database error: " + t.getMessage());
-        } else if (t instanceof IOException) {
-            alert.setHeaderText("File error: " + t.getMessage());
-        } else {
-            alert.setHeaderText(t.getMessage());
-        }
-        alert.showAndWait();
-    }
-
     @FXML
     private void createMovie(ActionEvent actionEvent) {
+        if (!UserSession.getInstance().isAdmin()) {
+            throw new SecurityException("You don't have permission to create movies.");
+        }
+
         if(!txtYear.getText().isEmpty() && (txtYear.getText().matches("[0-9]+"))) {
             try {
                 movieModel.createMovie(new Movie(-1, txtTitle.getText(), parseInt(txtYear.getText())));
             } catch (Exception e) {
-                displayError(e);
+                ErrorDisplay.displayError(e);
             }
         }
         else {
-            displayError(new IllegalArgumentException("Please enter a valid year."));
+            ErrorDisplay.displayError(new IllegalArgumentException("Please enter a valid year."));
         }
     }
 
     @FXML
     private void deleteMovie(ActionEvent actionEvent) {
+        if (!UserSession.getInstance().isAdmin()) {
+            throw new SecurityException("You don't have permission to delete movies.");
+        }
+
         if(selectedMovie != null) {
             try {
                 movieModel.deleteMovie(selectedMovie);
             } catch (Exception e) {
-                displayError(e);
+                ErrorDisplay.displayError(e);
             }
-
         }
     }
 
     @FXML
     private void updateMovie(ActionEvent actionEvent) {
+        if (!UserSession.getInstance().isAdmin()) {
+            throw new SecurityException("You don't have permission to update movies.");
+        }
+
         if(selectedMovie != null) {
             try {
                 Movie updatedMovie = new Movie(selectedMovie.id(), txtTitle.getText(), parseInt(txtYear.getText()));
                 movieModel.updateMovie(updatedMovie);
-                movieModel.scheduleMovieSearch(txtMovieSearch.getText());
+                selectedMovie = updatedMovie;
+                movieModel.searchMovie(txtMovieSearch.getText());
+                tblMovies.getSelectionModel().select(updatedMovie);
             } catch (Exception e) {
-                displayError(e);
+                ErrorDisplay.displayError(e);
             }
         }
     }

@@ -1,7 +1,7 @@
 package dk.easv.mrs.GUI.Model;
 
 import dk.easv.mrs.BE.User;
-import dk.easv.mrs.BLL.MovieManager;
+import dk.easv.mrs.BE.UserRole;
 import dk.easv.mrs.BLL.UserManager;
 
 import java.io.IOException;
@@ -21,5 +21,9 @@ public class UserModel {
 
     public boolean register(User user) throws SQLException, IOException {
         return userManager.register(user);
+    }
+
+    public UserRole getRole(User user) throws SQLException, IOException {
+        return userManager.getRole(user);
     }
 }

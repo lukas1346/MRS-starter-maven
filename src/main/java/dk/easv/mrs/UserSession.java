@@ -1,6 +1,7 @@
 package dk.easv.mrs;
 
 import dk.easv.mrs.BE.User;
+import dk.easv.mrs.BE.UserRole;
 
 public class UserSession {
 
@@ -28,5 +29,11 @@ public class UserSession {
 
     public void clearSession() {
         currentUser = null;
+    }
+
+    public boolean isAdmin() {
+        return UserSession.getInstance()
+                .getCurrentUser()
+                .role() == UserRole.ADMIN;
     }
 }

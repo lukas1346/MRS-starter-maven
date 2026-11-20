@@ -19,7 +19,7 @@
                   <TextField fx:id="txtTitle" prefWidth="200.0" />
                </children>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#createMovie" text="Create" />
+            <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#createMovie" text="Create" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
@@ -30,8 +30,8 @@
                   <TextField fx:id="txtYear" />
                </children>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#updateMovie" text="Update" />
-            <Button mnemonicParsing="false" onAction="#deleteMovie" text="Delete" />
+            <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateMovie" text="Update" />
+            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteMovie" text="Delete" />
             <Button mnemonicParsing="false" onAction="#openRating" text="Rating" />
             <Button mnemonicParsing="false" onAction="#loadMenu" text="Back to Menu">
                <HBox.margin>

@@ -3,6 +3,7 @@ package dk.easv.mrs.GUI.Controller;
 import dk.easv.mrs.BE.Movie;
 import dk.easv.mrs.BE.Rating;
 import dk.easv.mrs.BE.User;
+import dk.easv.mrs.GUI.ErrorDisplay;
 import dk.easv.mrs.GUI.Model.RatingModel;
 import dk.easv.mrs.UserSession;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,15 +11,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
-import static java.lang.Integer.parseInt;
 
 public class RatingViewController implements Initializable {
     @FXML
@@ -56,7 +52,7 @@ public class RatingViewController implements Initializable {
             tblRatings.setItems(ratingModel.getObservableMovies());
         } catch (Exception e) {
             e.printStackTrace();
-            displayError(e);
+            ErrorDisplay.displayError(e);
         }
     }
 
@@ -96,7 +92,7 @@ public class RatingViewController implements Initializable {
                         txtReview.setText(selectedRating.review());
                     }
                 } catch (Exception e) {
-                    displayError(e);
+                    ErrorDisplay.displayError(e);
                 }
             }
         });
@@ -104,20 +100,6 @@ public class RatingViewController implements Initializable {
         sliderRating.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             lblRating.setText("Rating: " + newValue.intValue());
         });
-    }
-
-    private void displayError(Throwable t)
-    {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Something went wrong");
-        if (t instanceof SQLException) {
-            alert.setHeaderText("Database error: " + t.getMessage());
-        } else if (t instanceof IOException) {
-            alert.setHeaderText("File error: " + t.getMessage());
-        } else {
-            alert.setHeaderText(t.getMessage());
-        }
-        alert.showAndWait();
     }
 
     @FXML
@@ -132,11 +114,11 @@ public class RatingViewController implements Initializable {
                         (int) sliderRating.getValue(),
                         txtReview.getText()));
             } catch (Exception e) {
-                displayError(e);
+                ErrorDisplay.displayError(e);
             }
         }
         else {
-            displayError(new IllegalArgumentException("Please enter a valid review."));
+            ErrorDisplay.displayError(new IllegalArgumentException("Please enter a valid review."));
         }
     }
 
@@ -146,7 +128,7 @@ public class RatingViewController implements Initializable {
             try {
                 ratingModel.deleteRating(selectedRating);
             } catch (Exception e) {
-                displayError(e);
+                ErrorDisplay.displayError(e);
             }
         }
     }
@@ -158,7 +140,7 @@ public class RatingViewController implements Initializable {
                 Rating updatedRating = new Rating(selectedRating.id(), selectedMovie.id(), selectedRating.userId(), selectedRating.name(), (int) sliderRating.getValue(), txtReview.getText());
                 ratingModel.updateRating(updatedRating);
             } catch (Exception e) {
-                displayError(e);
+                ErrorDisplay.displayError(e);
             }
         }
     }

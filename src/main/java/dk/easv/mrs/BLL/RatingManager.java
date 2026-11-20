@@ -2,9 +2,8 @@ package dk.easv.mrs.BLL;
 
 import dk.easv.mrs.BE.Movie;
 import dk.easv.mrs.BE.Rating;
-import dk.easv.mrs.DAL.IMovieDataAccess;
+
 import dk.easv.mrs.DAL.IRatingDataAccess;
-import dk.easv.mrs.DAL.MovieDAO_DB;
 import dk.easv.mrs.DAL.RatingDAO_DB;
 
 import java.io.IOException;

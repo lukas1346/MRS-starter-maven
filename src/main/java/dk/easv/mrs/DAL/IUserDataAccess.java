@@ -1,8 +1,7 @@
 package dk.easv.mrs.DAL;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-import dk.easv.mrs.BE.Rating;
 import dk.easv.mrs.BE.User;
+import dk.easv.mrs.BE.UserRole;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,4 +12,5 @@ public interface IUserDataAccess {
 
     boolean createUser(User user) throws IOException, SQLException;
 
+    UserRole getRole(User user) throws IOException, SQLException;
 }

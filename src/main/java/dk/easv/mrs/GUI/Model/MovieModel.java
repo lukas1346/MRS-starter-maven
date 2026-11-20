@@ -7,8 +7,6 @@ import javafx.collections.ObservableList;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -31,7 +29,7 @@ public class MovieModel {
         return moviesToBeViewed;
     }
 
-    private void searchMovie(String query) throws SQLException, IOException {
+    public void searchMovie(String query) throws SQLException, IOException {
         List<Movie> searchResults = movieManager.searchMovies(query);
         moviesToBeViewed.clear();
         moviesToBeViewed.addAll(searchResults);

@@ -1,9 +1,8 @@
 package dk.easv.mrs.BLL;
 
 import dk.easv.mrs.BE.User;
-import dk.easv.mrs.DAL.IRatingDataAccess;
+import dk.easv.mrs.BE.UserRole;
 import dk.easv.mrs.DAL.IUserDataAccess;
-import dk.easv.mrs.DAL.RatingDAO_DB;
 import dk.easv.mrs.DAL.UserDAO_DB;
 
 import java.io.IOException;
@@ -31,5 +30,8 @@ public class UserManager {
         return userDAO.createUser(userBuffer);
     }
 
+    public UserRole getRole(User user) throws SQLException, IOException {
+        return userDAO.getRole(user);
+    }
 
 }

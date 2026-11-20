@@ -84,7 +84,6 @@ public class RatingDAO_DB implements IRatingDataAccess {
 
             preparedStatement.executeUpdate();
         }
-
     }
 
     private Rating createRatingFromResult (ResultSet resultSet) throws SQLException {
